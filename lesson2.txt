@@ -1,0 +1,46 @@
+Giải thích câu lệnh
+git init:
+Lệnh này khởi tạo một Git repository mới trong thư mục hiện tại. Nó tạo ra một thư mục ẩn .git chứa tất cả các thông tin và lịch sử commit của dự án.
+
+git add <file_name>:
+Lệnh này thêm file được chỉ định vào vùng staging (khu vực chuẩn bị cho commit). Từ đó, khi thực hiện commit, file đó sẽ được đưa vào lịch sử của dự án.
+
+git add .:
+Lệnh này thêm tất cả các file thay đổi (bao gồm file mới và file đã chỉnh sửa) trong thư mục hiện tại (và các thư mục con) vào vùng staging.
+
+git commit -m “message”:
+Lệnh này tạo một commit, tức là một snapshot của những thay đổi hiện đang có trong vùng staging, và gắn kèm thông điệp mô tả các thay đổi đó.
+
+
+Bài tập 2:
+Giả sử trong folder lesson-2 ban đầu có 3 file: file1, file2, file3. Ta thực hiện các bước sau:
+
+1. Tạo 3 file: file1, file2, file3
+    Working directory: file1, file2, file3
+    Staging area: (chưa có gì)
+    Repository: (chưa có commit)
+
+2. Chạy lệnh: git init
+    Working directory: file1, file2, file3
+    Staging area: (vẫn trống)
+    Repository: Đã có thư mục .git nhưng chưa có commit
+
+3. Chạy lệnh: git commit -m "init project"
+    Ở bước này, vì chưa có file nào được thêm vào staging area nên commit sẽ là một commit rỗng (nếu Git cho phép commit rỗng) hoặc thông báo “nothing to commit”.
+    Repository: Tạo commit đầu tiên “init project” (không chứa file nào)
+    Working directory và Staging area: không thay đổi
+
+4. Chạy lệnh: git add file1
+    Staging area: Bây giờ chứa file1
+    Working directory: file1, file2, file3
+
+5. Chạy lệnh: git commit -m "add file1"
+    Lệnh này tạo commit thứ hai chứa file1 đã được staged. Sau commit, vùng staging sẽ được dọn sạch.
+    Repository: Có 2 commit: “init project” (commit rỗng) và “add file1” (chứa file1)
+    Working directory: vẫn có file1, file2, file3
+    Staging area: rỗng
+
+6. Chạy lệnh: git add file
+    Lệnh này yêu cầu Git thêm file có tên “file” vào staging area. Tuy nhiên, trong folder chỉ có các file: file1, file2, file3.
+    Do đó, lệnh không thêm được file nào (có thể báo lỗi hoặc không có thay đổi).
+    Staging area: vẫn rỗng
