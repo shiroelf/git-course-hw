@@ -1,0 +1,83 @@
+1.Giải thích các câu lệnh git
+git commit --amend
+Lệnh này cho phép bạn “sửa” commit cuối cùng. Nó mở ra trình soạn thảo (hoặc dùng message được chỉ định) để thay đổi thông tin commit (message, nội dung nếu có thay đổi staging). Điều này hữu ích khi bạn cần chỉnh sửa lỗi trong commit vừa thực hiện.
+
+git commit --amend -m "<message>"
+Tương tự lệnh trên, nhưng thay vì mở trình soạn thảo, bạn truyền trực tiếp thông điệp commit mới qua tham số -m. Commit cuối cùng sẽ được cập nhật với message mới (và bao gồm các thay đổi hiện có trong staging nếu có).
+
+git restore --staged <file>
+Lệnh này dùng để hủy việc đưa file vào vùng staging (index). File vẫn giữ nguyên trạng thái trong thư mục làm việc (working directory), chỉ được loại bỏ khỏi vùng chờ commit.
+
+git reset HEAD~1
+Lệnh này “lùi” lại 1 commit so với HEAD hiện tại. Commit cuối cùng sẽ bị loại bỏ khỏi nhánh (branch) và các thay đổi của commit đó được đưa về trạng thái “unstaged” (nằm lại trong working directory).
+
+2.Bài tập mô phỏng git 
+Giả sử ta có một folder lesson-3 và tiến hành theo các bước:
+
+    Tạo 3 file:
+        Tạo file file1, file2, file3
+        (Hiện tại cả 3 file đều là trạng thái untracked – chưa được Git theo dõi.)
+
+    git init
+        Khởi tạo repository mới (thư mục .git được tạo ra).
+        Trạng thái: chưa có commit nào, cả working directory chứa 3 file untracked.
+
+    git commit -m "init project"
+        Giả sử lệnh này được chạy với tùy chọn cho phép commit rỗng (empty commit) để ghi lại trạng thái “khởi tạo” của dự án.
+        Commit đầu tiên: message "init project" – không chứa file nào (vì chưa có file nào được staged).
+
+    git add file1
+        File file1 được đưa vào vùng staging.
+
+    git commit -m "add file"
+        Tạo commit thứ hai với message "add file" chứa nội dung của file file1.
+        Commit thứ hai: chứa file file1.
+
+    git add .
+        Lệnh này thêm tất cả file thay đổi và untracked vào vùng staging.
+        Các file được thêm: file2 và file3 (vì file1 đã được commit và không có thay đổi mới).
+
+    git restore --staged file2
+        Hủy việc thêm file file2 khỏi vùng staging.
+        Sau lệnh này: trong staging chỉ còn file3. File file2 quay trở về trạng thái untracked.
+
+    git commit -m "add all files"
+        Tạo commit thứ ba với message "add all files", commit này sẽ chứa file file3 (vì chỉ file3 nằm trong staging).
+        Commit thứ ba: chứa file file3.
+
+    git reset HEAD~1
+        Lùi lại 1 commit (loại bỏ commit "add all files").
+        Sau lệnh này:
+        Commit history: chỉ còn 2 commit:
+            "init project" (commit rỗng)
+            "add file" (chứa file file1)
+        Working directory: thay đổi của commit "add all files" (tức file file3) được đưa về trạng thái unstaged. File file2 vẫn untracked như trước.
+
+3. Bài tập mô phỏng git
+Giả sử ta có một folder lesson-3-git và thực hiện các bước:
+
+    git init
+        Khởi tạo repository mới.
+
+    Tạo file:
+        Tạo file file1.txt
+        Tạo file file2.txt
+        Tạo folder oops chứa file file3.txt
+        Tất cả 3 file này (file1.txt, file2.txt, oops/file3.txt) ban đầu đều là untracked.
+
+    Tạo file .gitignore và thêm 2 dòng:
+        Nội dung file .gitignore gồm:
+            file1.txt
+            oops/
+        Điều này có nghĩa: Git sẽ bỏ qua file file1.txt và toàn bộ nội dung trong folder oops (bao gồm cả oops/file3.txt).
+
+    git add .
+        Lệnh này sẽ quét và thêm tất cả file không bị ignore vào vùng staging.
+        Vì .gitignore đã quy định bỏ qua file1.txt và oops/, nên các file được thêm vào staging sẽ chỉ là:
+            file2.txt
+            .gitignore
+
+    git commit -m "init project"
+        Commit tạo ra commit đầu tiên với message "init project" chứa 2 file đã được staging:
+            file2.txt
+            .gitignore
